@@ -11,6 +11,8 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import io.restassured.response.ValidatableResponse;
 import java.time.Duration;
+import static utility.Constants.*;
+import static org.junit.Assert.assertEquals;
 
 public class PersonalCabinetPageTest extends TestFlow {
     private WebDriver driver;
@@ -32,7 +34,7 @@ public class PersonalCabinetPageTest extends TestFlow {
         driver = WebDriverSetup.runDriver();
         ValidatableResponse userLoginRequest = userAPI.createUser(userLogin);
         this.accessToken = userLoginRequest.extract().path("accessToken");
-        driver.get(Constants.LOGIN_PAGE_URL);
+        driver.get(LOGIN_PAGE_URL);
         new LoginPage(driver).login(email, password);
     }
 
@@ -43,7 +45,8 @@ public class PersonalCabinetPageTest extends TestFlow {
         new MainPage(driver).headerLoginButtonClick();
         new PersonalCabinetPage(driver).logoutButtonClick();
         new WebDriverWait(driver, Duration.ofSeconds(10))
-                .until(ExpectedConditions.urlToBe(Constants.LOGIN_PAGE_URL));
+                .until(ExpectedConditions.urlToBe(LOGIN_PAGE_URL));
+        assertEquals("URL Страницы Авторизации не совпадает с URL в документации", LOGIN_PAGE_URL, driver.getCurrentUrl());
     }
 
     @Test
@@ -52,7 +55,8 @@ public class PersonalCabinetPageTest extends TestFlow {
     public void constructorButtonClickFromCabinetPageTest() {
         new PersonalCabinetPage(driver).headerConstructorButtonClick();
         new WebDriverWait(driver, Duration.ofSeconds(10))
-                .until(ExpectedConditions.urlToBe(Constants.MAIN_PAGE_URL));
+                .until(ExpectedConditions.urlToBe(MAIN_PAGE_URL));
+        assertEquals("URL Главной Страницы не совпадает с URL в документации", MAIN_PAGE_URL, driver.getCurrentUrl());
     }
 
     @Test
@@ -61,7 +65,8 @@ public class PersonalCabinetPageTest extends TestFlow {
     public void logoClickFromCabinetPageTest() {
         new PersonalCabinetPage(driver).headerLogoClick();
         new WebDriverWait(driver, Duration.ofSeconds(10))
-                .until(ExpectedConditions.urlToBe(Constants.MAIN_PAGE_URL));
+                .until(ExpectedConditions.urlToBe(MAIN_PAGE_URL));
+        assertEquals("URL Главной Страницы не совпадает с URL в документации", MAIN_PAGE_URL, driver.getCurrentUrl());
     }
 
     @Test
@@ -70,7 +75,8 @@ public class PersonalCabinetPageTest extends TestFlow {
     public void openCabinetPageTest() {
         new MainPage(driver).headerLoginButtonClick();
         new WebDriverWait(driver, Duration.ofSeconds(10))
-                .until(ExpectedConditions.urlToBe(Constants.PERSONAL_CABINET_PAGE_URL));
+                .until(ExpectedConditions.urlToBe(PERSONAL_CABINET_PAGE_URL));
+        assertEquals("URL Личного Кабинета не совпадает с URL в документации", PERSONAL_CABINET_PAGE_URL, driver.getCurrentUrl());
     }
 
     @After

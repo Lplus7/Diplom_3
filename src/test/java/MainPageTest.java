@@ -1,4 +1,5 @@
 import TestBasis.TestFlow;
+import org.openqa.selenium.By;
 import page_objects.MainPage;
 import utility.Constants;
 import utility.WebDriverSetup;
@@ -8,6 +9,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
 
 public class MainPageTest extends TestFlow {
     private WebDriver driver;
@@ -29,6 +32,7 @@ public class MainPageTest extends TestFlow {
             mainPage.constructorSaucesButtonClick();
         }
         mainPage.constructorBunsButtonClick();
+        assertThat(true, equalTo(driver.findElement(By.xpath(".//div/span[text()='Булки']")).isDisplayed()));
     }
 
     @Test
@@ -39,6 +43,7 @@ public class MainPageTest extends TestFlow {
             mainPage.constructorSaucesButtonClick();
         }
         mainPage.constructorFillingsButtonClick();
+        assertThat(true, equalTo(driver.findElement(By.xpath(".//div/span[text()='Начинки']")).isDisplayed()));
     }
 
     @Test
@@ -49,6 +54,7 @@ public class MainPageTest extends TestFlow {
             mainPage.constructorFillingsButtonClick();
         }
         mainPage.constructorSaucesButtonClick();
+        assertThat(true, equalTo(driver.findElement(By.xpath(".//div/span[text()='Соусы']")).isDisplayed()));
     }
 
     @After

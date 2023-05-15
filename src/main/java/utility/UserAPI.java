@@ -12,7 +12,7 @@ public class UserAPI {
         RestAssured.baseURI = STELLAR_API_URL;
     }
 
-    @Step("Авторизация пользователя через API")
+    @Step("Авторизирую пользователя через API")
     public ValidatableResponse loginUser (UserLogin userLogin) {
         return given().header("Content-type", "application/json")
                 .and()
