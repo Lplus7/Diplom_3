@@ -1,7 +1,5 @@
 import TestBasis.TestFlow;
-import org.openqa.selenium.By;
 import page_objects.MainPage;
-import utility.Constants;
 import utility.WebDriverSetup;
 import io.qameta.allure.Description;
 import io.qameta.allure.junit4.DisplayName;
@@ -9,18 +7,19 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
+import static org.junit.Assert.assertEquals;
+import static utility.Constants.MAIN_PAGE_URL;
 
 public class MainPageTest extends TestFlow {
     private WebDriver driver;
     private MainPage mainPage;
+    private String expectedTab;
 
     @Before
     @Description("Инициализация данных")
     public void setUp() {
         driver = WebDriverSetup.runDriver();
-        driver.get(Constants.MAIN_PAGE_URL);
+        driver.get(MAIN_PAGE_URL);
         mainPage = new MainPage(driver);
     }
 
@@ -28,33 +27,36 @@ public class MainPageTest extends TestFlow {
     @DisplayName("Проверяю переход к разделу Булки")
     @Description("Проверка успешного скролла ко вкладке Булки")
     public void constructorBunButtonClickTest() {
+        expectedTab = "Булки";
         if (mainPage.getConstructorActiveTab().equals("Булки")) {
-            mainPage.constructorSaucesButtonClick();
+            mainPage.constructorFillingsButtonClick();
         }
         mainPage.constructorBunsButtonClick();
-        assertThat(true, equalTo(driver.findElement(By.xpath(".//div/span[text()='Булки']")).isDisplayed()));
+        assertEquals("Вкладка не переключилась, ожидается активной вкладка " + expectedTab, expectedTab, mainPage.getConstructorActiveTab());
     }
 
     @Test
     @DisplayName("Проверяю переход к разделу Начинки")
     @Description("Проверка успешного скролла ко вкладке Начинки")
     public void constructorMainButtonClickTest() {
+        expectedTab = "Начинки";
         if (mainPage.getConstructorActiveTab().equals("Начинки")) {
             mainPage.constructorSaucesButtonClick();
         }
         mainPage.constructorFillingsButtonClick();
-        assertThat(true, equalTo(driver.findElement(By.xpath(".//div/span[text()='Начинки']")).isDisplayed()));
+        assertEquals("Вкладка не переключилась, ожидается активной вкладка " + expectedTab, expectedTab, mainPage.getConstructorActiveTab());
     }
 
     @Test
     @DisplayName("Проверяю переход к разделу Соусы")
     @Description("Проверка успешного скролла ко вкладке Соусы")
     public void constructorSauceButtonClickTest() {
+        expectedTab = "Соусы";
         if(mainPage.getConstructorActiveTab().equals("Соусы")) {
             mainPage.constructorFillingsButtonClick();
         }
         mainPage.constructorSaucesButtonClick();
-        assertThat(true, equalTo(driver.findElement(By.xpath(".//div/span[text()='Соусы']")).isDisplayed()));
+        assertEquals("Вкладка не переключилась, ожидается активной вкладка " + expectedTab, expectedTab, mainPage.getConstructorActiveTab());
     }
 
     @After

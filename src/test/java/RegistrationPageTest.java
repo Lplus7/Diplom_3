@@ -1,5 +1,4 @@
 import TestBasis.TestFlow;
-import org.hamcrest.MatcherAssert;
 import page_objects.RegistrationPage;
 import utility.*;
 import io.qameta.allure.Description;
@@ -44,8 +43,8 @@ public class RegistrationPageTest extends TestFlow {
         password = passwordValid;
         RegistrationPage registrationPage = new RegistrationPage(driver);
         registrationPage.registrationFormFilling(email, password, name);
-        assertEquals("Не осуществлена переадресация на страницу авторизации", LOGIN_PAGE_URL, driver.getCurrentUrl());
-
+        assertNotEquals("Пользователь всё ещё находится на странице Регистрации, переадресации не произошло", REGISTRATION_PAGE_URL, driver.getCurrentUrl());
+        assertEquals("URL Страницы Авторизации не совпадает с URL в документации", LOGIN_PAGE_URL, driver.getCurrentUrl());
     }
 
     @Test

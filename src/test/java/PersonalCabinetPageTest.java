@@ -1,4 +1,5 @@
 import TestBasis.TestFlow;
+import org.openqa.selenium.By;
 import utility.*;
 import page_objects.*;
 import io.qameta.allure.Description;
@@ -11,8 +12,8 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import io.restassured.response.ValidatableResponse;
 import java.time.Duration;
+import static org.junit.Assert.*;
 import static utility.Constants.*;
-import static org.junit.Assert.assertEquals;
 
 public class PersonalCabinetPageTest extends TestFlow {
     private WebDriver driver;
@@ -46,7 +47,8 @@ public class PersonalCabinetPageTest extends TestFlow {
         new PersonalCabinetPage(driver).logoutButtonClick();
         new WebDriverWait(driver, Duration.ofSeconds(10))
                 .until(ExpectedConditions.urlToBe(LOGIN_PAGE_URL));
-        assertEquals("URL Страницы Авторизации не совпадает с URL в документации", LOGIN_PAGE_URL, driver.getCurrentUrl());
+        assertNotEquals("Пользователь всё ещё находится в Личном Кабинете, выход не произошёл", PERSONAL_CABINET_PAGE_URL, driver.getCurrentUrl());
+        assertEquals("Пользователь не был перенаправлен на страницу Авторизации, или её URL отличается от указанного в документации", LOGIN_PAGE_URL, driver.getCurrentUrl());
     }
 
     @Test
@@ -56,7 +58,10 @@ public class PersonalCabinetPageTest extends TestFlow {
         new PersonalCabinetPage(driver).headerConstructorButtonClick();
         new WebDriverWait(driver, Duration.ofSeconds(10))
                 .until(ExpectedConditions.urlToBe(MAIN_PAGE_URL));
-        assertEquals("URL Главной Страницы не совпадает с URL в документации", MAIN_PAGE_URL, driver.getCurrentUrl());
+        boolean isConstructorButtonAvailable = driver.findElement(By.xpath(".//header//p[text()='Конструктор']")).isDisplayed() && driver.findElement(By.xpath(".//header//p[text()='Конструктор']")).isEnabled();
+        assertNotEquals("Пользователь всё ещё находится в Личном Кабинете, переход не произошёл", PERSONAL_CABINET_PAGE_URL, driver.getCurrentUrl());
+        assertEquals("Пользователь не был перенаправлен на Главную страницу, или её URL отличается от указанного в документации", MAIN_PAGE_URL, driver.getCurrentUrl());
+        assertEquals("Кнопка Конструктор не прогрузилась или не кликабельна", true, isConstructorButtonAvailable);
     }
 
     @Test
@@ -66,17 +71,23 @@ public class PersonalCabinetPageTest extends TestFlow {
         new PersonalCabinetPage(driver).headerLogoClick();
         new WebDriverWait(driver, Duration.ofSeconds(10))
                 .until(ExpectedConditions.urlToBe(MAIN_PAGE_URL));
-        assertEquals("URL Главной Страницы не совпадает с URL в документации", MAIN_PAGE_URL, driver.getCurrentUrl());
+        boolean isLogoAvailable = driver.findElement(By.className("AppHeader_header__logo__2D0X2")).isDisplayed() && driver.findElement(By.className("AppHeader_header__logo__2D0X2")).isEnabled();
+        assertNotEquals("Пользователь всё ещё находится в Личном Кабинете, переход не произошёл", PERSONAL_CABINET_PAGE_URL, driver.getCurrentUrl());
+        assertEquals("Пользователь не был перенаправлен на Главную страницу, или её URL отличается от указанного в документации", MAIN_PAGE_URL, driver.getCurrentUrl());
+        assertEquals("Логотип не прогрузился или не кликабелен", true, isLogoAvailable);
     }
 
     @Test
     @DisplayName("Перехожу по кнопке Личный кабинет")
-    @Description("Проверяю нажатие на кнопку Личный кабинет и последующую валидную переадресацию в ЛК")
+    @Description("Проверяю нажатие на кнопку Личный кабинет и последующую переадресацию в ЛК")
     public void openCabinetPageTest() {
         new MainPage(driver).headerLoginButtonClick();
         new WebDriverWait(driver, Duration.ofSeconds(10))
                 .until(ExpectedConditions.urlToBe(PERSONAL_CABINET_PAGE_URL));
-        assertEquals("URL Личного Кабинета не совпадает с URL в документации", PERSONAL_CABINET_PAGE_URL, driver.getCurrentUrl());
+        boolean isPersonalCabinetButtonAvailable = driver.findElement(By.linkText("Личный Кабинет")).isDisplayed() && driver.findElement(By.linkText("Личный Кабинет")).isEnabled();
+        assertNotEquals("Пользователь всё ещё находится на Главной странице, переход не произошёл", MAIN_PAGE_URL, driver.getCurrentUrl());
+        assertEquals("Пользователь не был перенаправлен на страницу Личного Кабинета, или её URL отличается от указанного в документации", PERSONAL_CABINET_PAGE_URL, driver.getCurrentUrl());
+        assertEquals("Кнопка Личный Кабинет не прогрузилась или не кликабельна", true, isPersonalCabinetButtonAvailable);
     }
 
     @After

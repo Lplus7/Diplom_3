@@ -29,6 +29,8 @@ public class RegistrationPage {
         driver.findElement(fieldPassword).isEnabled();
         driver.findElement(fieldPassword).sendKeys(password);
         driver.findElement(buttonRegistration).click();
+        new WebDriverWait(driver, Duration.ofSeconds(3))
+                .until(ExpectedConditions.visibilityOfElementLocated(buttonLogin));
     }
 
     @Step("Проверяю отображение ошибки некорректного пароля")
